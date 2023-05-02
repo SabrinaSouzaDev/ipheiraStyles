@@ -1,4 +1,7 @@
 # Firebase Flutter
+## Versões
+* JDK 17.0.6 LTS
+* Flutter 3.7.12
 ## Configuração Glogal
 * Installar Node
 * npm install -g firebase-tools
