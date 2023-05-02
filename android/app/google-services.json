@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "591968216080",
+    "project_id": "teste-356814",
+    "storage_bucket": "teste-356814.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591968216080:android:712f5a361c26fa58679695",
+        "android_client_info": {
+          "package_name": "br.com.alura.flutter_firebase_firestore_first"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591968216080-dukorp31ti812qak6nvm8urpsl2n0tjv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFolttdGQGOj0oee28SpZv5sNIPo0sjac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "591968216080-dukorp31ti812qak6nvm8urpsl2n0tjv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591968216080:android:0cfc68d0c3938d1e679695",
+        "android_client_info": {
+          "package_name": "com.example.ipheira"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "591968216080-dukorp31ti812qak6nvm8urpsl2n0tjv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFolttdGQGOj0oee28SpZv5sNIPo0sjac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "591968216080-dukorp31ti812qak6nvm8urpsl2n0tjv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
