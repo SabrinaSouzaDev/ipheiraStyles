@@ -1,0 +1,26 @@
+# Configurações do arquivo .gitattributes para projetos Flutter
+
+# Define a codificação de caracteres dos arquivos
+*.dart linguist-encoding=UTF-8
+
+# Define os arquivos que não devem ser versionados pelo Git
+*.iml linguist-generated
+.gradle/ linguist-generated
+/local.properties linguist-generated
+/.idea/ linguist-generated
+
+# Força Unix newlines
+* text=auto eol=lf
+
+# Define os arquivos que devem ser tratados como binários pelo Git
+*.pbxproj binary
+*.pbxuser binary
+*.xcworkspacedata binary
+*.xcuserstate binary
+
+# Define os arquivos que devem ser tratados como texto pelo Git
+*.yaml text
+*.yml text
+*.sh text
+*.md text
+*.txt text
