@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ipheira/pages/register.dart';
 import 'package:ipheira/utils/image_url.dart';
 
 import '../services/auth_service.dart';
@@ -137,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // ação a ser executada ao clicar no hyperlink
+                      Navigator.push(context, MaterialPageRoute(builder: (newContext) => const RegisterForm()));
                     },
                     child: const Text(
                       'Ainda não tem conta? cadastre-se agora',
@@ -148,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      // ação a ser executada ao clicar no hyperlink
+
                     },
                     child: const Text(
                       'Esqueceu a senha?',
