@@ -36,3 +36,6 @@ runApp(const MaterialApp(home: MyApp(),));
 * entre no arquivo android/app/build.gradle
 * Edite o valor de minSdkVersion para 19
 * Adicione uma chave/valor multiDexEnabled true
+
+## Authentication
+* para instalar 

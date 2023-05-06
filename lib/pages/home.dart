@@ -1,7 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:ipheira/utils/image_url.dart';
+
+import '../services/auth_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -11,11 +11,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  AuthService authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +27,12 @@ class _HomePageState extends State<HomePage> {
           child: Container(
             height: 1000,
             decoration: BoxDecoration(
-                    image: DecorationImage(
+                image: DecorationImage(
                     image: NetworkImage(ImageUrl.background.value),
                     fit: BoxFit.scaleDown,
                     alignment: Alignment.bottomCenter // alterado aqui
-                ),
-              color: Colors.white
-            ),
+                    ),
+                color: Colors.white),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +44,10 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                     height: 200,
                     width: 225,
-                    child: Image.network(ImageUrl.logo.value, fit: BoxFit.fill,),
+                    child: Image.network(
+                      ImageUrl.logo.value,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                   RichText(
                     textAlign: TextAlign.center,
@@ -57,10 +60,10 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(color: Colors.black, fontSize: 19),
                         ),
                         TextSpan(
-                          text: 'Ipheira\n',
-                          style: TextStyle(color: Color.fromRGBO(77,167,104,1),
-                              fontSize: 19
-                        )),
+                            text: 'Ipheira\n',
+                            style: TextStyle(
+                                color: Color.fromRGBO(77, 167, 104, 1),
+                                fontSize: 19)),
                       ],
                     ),
                   ),
@@ -68,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.all(16),
                     child: TextFormField(
                       textAlign: TextAlign.start,
-                      onChanged: (text){
+                      onChanged: (text) {
                         setState(() {});
                       },
                       controller: emailController,
@@ -76,14 +79,16 @@ class _HomePageState extends State<HomePage> {
                         border: OutlineInputBorder(),
                         hintText: 'Email',
                         hintStyle: TextStyle(color: Colors.black),
-                        fillColor: Color.fromRGBO(200,200,200,1),
+                        fillColor: Color.fromRGBO(200, 200, 200, 1),
                         filled: true,
                       ),
-                      validator: (value){
+                      validator: (value) {
                         if (value == null || value == "") {
                           return "O valor de email deve ser preenchido";
                         }
-                        if (!value.contains("@") || !value.contains(".") || value.length < 4){
+                        if (!value.contains("@") ||
+                            !value.contains(".") ||
+                            value.length < 4) {
                           return "O email deve ser válido";
                         }
                       },
@@ -95,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                       textAlign: TextAlign.start,
                       controller: passwordController,
                       obscureText: true,
-                      onChanged: (text){
+                      onChanged: (text) {
                         setState(() {});
                       },
                       keyboardType: TextInputType.visiblePassword,
@@ -103,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                         border: OutlineInputBorder(),
                         hintText: 'Senha',
                         hintStyle: TextStyle(color: Colors.black),
-                        fillColor: Color.fromRGBO(200,200,200,1),
+                        fillColor: Color.fromRGBO(200, 200, 200, 1),
                         filled: true,
                       ),
                       validator: (value) {
@@ -114,19 +119,20 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
                     child: ElevatedButton(
-                        onPressed: () {
-                          if(_formKey.currentState!.validate()){
-                            print(emailController.text);
-                            print(passwordController.text);
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          print(emailController.text);
+                          print(passwordController.text);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
                           textStyle: const TextStyle(fontSize: 18),
-                          padding: const EdgeInsets.symmetric(horizontal: 33, vertical: 13)
-                        ),
-                        child: const Text("Login"),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 33, vertical: 13)),
+                      child: const Text("Login"),
                     ),
                   ),
                   GestureDetector(
@@ -136,9 +142,8 @@ class _HomePageState extends State<HomePage> {
                     child: const Text(
                       'Ainda não tem conta? cadastre-se agora',
                       style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        color: Color.fromRGBO(0,102,51,1)
-                      ),
+                          decoration: TextDecoration.underline,
+                          color: Color.fromRGBO(0, 102, 51, 1)),
                     ),
                   ),
                   GestureDetector(
@@ -149,8 +154,7 @@ class _HomePageState extends State<HomePage> {
                       'Esqueceu a senha?',
                       style: TextStyle(
                           decoration: TextDecoration.underline,
-                          color: Colors.red
-                      ),
+                          color: Colors.red),
                     ),
                   ),
                 ],
@@ -161,21 +165,33 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-  // botaoEnviarClicado() {
-  //   String email = _emailController.text;
-  //   String senha = _senhaController.text;
-  //   String nome = _nomeController.text;
-  //
-  //   if (_formKey.currentState!.validate()) {
-  //     if (isEntrando) {
-  //       _entrarUsuario(email: email, senha: senha);
-  //     } else {
-  //       _criarUsuario(email: email, senha: senha, nome: nome);
-  //     }
+
+  botaoEnviarClicado() {
+    String email = emailController.text;
+    String senha = passwordController.text;
+    //String nome = _nomeController.text;
+
+    // if (_formKey.currentState!.validate()) {
+    //   if (isEntrando) {
+    //     _entrarUsuario(email: email, senha: senha);
+    //   } else {
+    //     _criarUsuario(email: email, senha: senha, nome: nome);
+    //   }
+    // }
+  }
+
+  // _criarUsuario(
+  //     {required String email, required String senha, required String nome, }) async {
+  //   String? erro = await authService.cadastrarUsuario(email: email, senha: senha, nome: nome, cpfCnpj: cpfCnpj, ativo: ativo, excluir: excluir, cep: cep, dt_nasc: dt_nasc, endereco: endereco, telefone: telefone, tipo_user: tipo_user, codLoja: codLoja)
+  //   if(erro == null) {
+  //     print("Usuário Cadastrado");
+  //   } else {
+  //     print(erro);
   //   }
+  //   print("Criar usuário $email, $senha, $nome");
   // }
 
   _entrarUsuario({required String email, required String senha}) {
-    print("Entrar usuário $email, $senha");
+    authService.entrarUsuario(email: email, senha: senha);
   }
 }
