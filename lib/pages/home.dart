@@ -53,23 +53,17 @@ class _HomePageState extends State<HomePage> {
                     textAlign: TextAlign.center,
                     text: const TextSpan(
                       text: 'Bem-vindo\n',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 21),
+                      style: TextStyle(color: Colors.black, fontSize: 19),
                       children: <TextSpan>[
                         TextSpan(
                           text: 'ao\n',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 21),
+                          style: TextStyle(color: Colors.black, fontSize: 19),
                         ),
                         TextSpan(
                             text: 'Ipheira\n',
                             style: TextStyle(
                                 color: Color.fromRGBO(77, 167, 104, 1),
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold
-                            )),
+                                fontSize: 19)),
                       ],
                     ),
                   ),
@@ -126,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+                        const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -152,7 +146,6 @@ class _HomePageState extends State<HomePage> {
                           color: Color.fromRGBO(0, 102, 51, 1)),
                     ),
                   ),
-                  const SizedBox(height: 12,),
                   GestureDetector(
                     onTap: () {
                       // ação a ser executada ao clicar no hyperlink
@@ -164,7 +157,6 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.red),
                     ),
                   ),
-                  const SizedBox(height: 25,),
                 ],
               ),
             ),
