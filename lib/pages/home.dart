@@ -79,6 +79,14 @@ class _HomePageState extends State<HomePage> {
                         fillColor: Color.fromRGBO(200,200,200,1),
                         filled: true,
                       ),
+                      validator: (value){
+                        if (value == null || value == "") {
+                          return "O valor de email deve ser preenchido";
+                        }
+                        if (!value.contains("@") || !value.contains(".") || value.length < 4){
+                          return "O email deve ser válido";
+                        }
+                      },
                     ),
                   ),
                   Padding(
@@ -98,6 +106,11 @@ class _HomePageState extends State<HomePage> {
                         fillColor: Color.fromRGBO(200,200,200,1),
                         filled: true,
                       ),
+                      validator: (value) {
+                        if (value == null || value.length < 4) {
+                          return "A senha deve ser válida";
+                        }
+                      },
                     ),
                   ),
                   Padding(
@@ -147,5 +160,22 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+  // botaoEnviarClicado() {
+  //   String email = _emailController.text;
+  //   String senha = _senhaController.text;
+  //   String nome = _nomeController.text;
+  //
+  //   if (_formKey.currentState!.validate()) {
+  //     if (isEntrando) {
+  //       _entrarUsuario(email: email, senha: senha);
+  //     } else {
+  //       _criarUsuario(email: email, senha: senha, nome: nome);
+  //     }
+  //   }
+  // }
+
+  _entrarUsuario({required String email, required String senha}) {
+    print("Entrar usuário $email, $senha");
   }
 }
