@@ -13,8 +13,8 @@ class RegisterForm extends StatefulWidget {
 class _RegisterFormState extends State<RegisterForm> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController userTypeController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  int userTypeController = 1;
 
   final _formKey = GlobalKey<FormState>();
   AuthService authService = AuthService();
@@ -43,87 +43,127 @@ class _RegisterFormState extends State<RegisterForm> {
                 child: Column(
                   children: [
                     //NOME
-                    TextFormField(
-                      textAlign: TextAlign.start,
-                      controller: nameController,
-                      obscureText: false,
-                      onChanged: (text) {
-                        setState(() {});
-                      },
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Nome da Loja ou Cliente',
-                        hintStyle: TextStyle(color: Colors.black),
-                        fillColor: Color.fromRGBO(200, 200, 200, 1),
-                        filled: true,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        textAlign: TextAlign.start,
+                        controller: nameController,
+                        obscureText: false,
+                        onChanged: (text) {
+                          setState(() {});
+                        },
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Nome da Loja ou Cliente',
+                          hintStyle: TextStyle(color: Colors.black),
+                          fillColor: Color.fromRGBO(200, 200, 200, 1),
+                          filled: true,
+                        ),
                       ),
                     ),
                     // TIPO DE USUÁRIO
-                    TextFormField(
-                      textAlign: TextAlign.start,
-                      controller: userTypeController,
-                      obscureText: true,
-                      onChanged: (text) {
-                        setState(() {});
-                      },
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Tipo de Usuário (1 ou 2)',
-                        hintStyle: TextStyle(color: Colors.black),
-                        fillColor: Color.fromRGBO(200, 200, 200, 1),
-                        filled: true,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          ListTile(
+                            title: const Text("Lojista"),
+                            leading: Radio<int>(
+                              value: 1,
+                              groupValue: userTypeController,
+                              onChanged: (value) {
+                                setState(() {
+                                  userTypeController = value!;
+                                });
+                              },
+                            )
+                          ),
+                          ListTile(
+                              title: const Text("Lojista"),
+                              leading: Radio<int>(
+                                value: 2,
+                                groupValue: userTypeController,
+                                onChanged: (value) {
+                                  setState(() {
+                                    userTypeController = value!;
+                                  });
+                                },
+                              )
+                          )
+                        ],
                       ),
+                      // child: TextFormField(
+                      //   textAlign: TextAlign.start,
+                      //   controller: userTypeController,
+                      //   obscureText: true,
+                      //   onChanged: (text) {
+                      //     setState(() {});
+                      //   },
+                      //   keyboardType: TextInputType.visiblePassword,
+                      //   decoration: const InputDecoration(
+                      //     border: OutlineInputBorder(),
+                      //     hintText: 'Tipo de Usuário (1 ou 2)',
+                      //     hintStyle: TextStyle(color: Colors.black),
+                      //     fillColor: Color.fromRGBO(200, 200, 200, 1),
+                      //     filled: true,
+                      //   ),
+                      // ),
                     ),
                     // EMAIL
-                    TextFormField(
-                      textAlign: TextAlign.start,
-                      controller: emailController,
-                      obscureText: false,
-                      onChanged: (text) {
-                        setState(() {});
-                      },
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Email',
-                        hintStyle: TextStyle(color: Colors.black),
-                        fillColor: Color.fromRGBO(200, 200, 200, 1),
-                        filled: true,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        textAlign: TextAlign.start,
+                        controller: emailController,
+                        obscureText: false,
+                        onChanged: (text) {
+                          setState(() {});
+                        },
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Email',
+                          hintStyle: TextStyle(color: Colors.black),
+                          fillColor: Color.fromRGBO(200, 200, 200, 1),
+                          filled: true,
+                        ),
+                        validator: (value) {
+                          if (value == null || value == "") {
+                            return "O valor de email deve ser preenchido";
+                          }
+                          if (!value.contains("@") ||
+                              !value.contains(".") ||
+                              value.length < 4) {
+                            return "O email deve ser válido";
+                          }
+                        },
                       ),
-                      validator: (value) {
-                        if (value == null || value == "") {
-                          return "O valor de email deve ser preenchido";
-                        }
-                        if (!value.contains("@") ||
-                            !value.contains(".") ||
-                            value.length < 4) {
-                          return "O email deve ser válido";
-                        }
-                      },
                     ),
                     // PASSWORD
-                    TextFormField(
-                      textAlign: TextAlign.start,
-                      controller: passwordController,
-                      obscureText: true,
-                      onChanged: (text) {
-                        setState(() {});
-                      },
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Senha',
-                        hintStyle: TextStyle(color: Colors.black),
-                        fillColor: Color.fromRGBO(200, 200, 200, 1),
-                        filled: true,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextFormField(
+                        textAlign: TextAlign.start,
+                        controller: passwordController,
+                        obscureText: true,
+                        onChanged: (text) {
+                          setState(() {});
+                        },
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Senha',
+                          hintStyle: TextStyle(color: Colors.black),
+                          fillColor: Color.fromRGBO(200, 200, 200, 1),
+                          filled: true,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.length < 4) {
+                            return "A senha deve ser válida";
+                          }
+                        },
                       ),
-                      validator: (value) {
-                        if (value == null || value.length < 4) {
-                          return "A senha deve ser válida";
-                        }
-                      },
                     ),
                     // BOTÃO CADASTRAR
                     ElevatedButton(
