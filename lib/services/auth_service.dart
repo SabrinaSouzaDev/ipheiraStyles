@@ -1,35 +1,45 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
-  final FirebaseAuth _firebaseAuthn = FirebaseAuth.instance;
+  // Instancia o objeto _firebaseAuth com os recursos do Authentication
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  entrarUsuario({required String email, required String senha}) {
-    print("Metodo Logar");
+  // Método para autenticar o usuário
+  Future<String?> entrarUsuario({required String email, required String senha}) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: senha);
+    } on FirebaseAuthException catch (e) {
+      switch(e.code) {
+        case "user-not-found":
+          return "Usuário não encontrado";
+        case "wrong-password":
+          return "Senha incorreta";
+      }
+      print(e.code);
+      return e.code;
+    }
+    return null;
   }
 
-  Future<String?> cadastrarUsuario({ // Future<String?> => Funcção assincrona que permite retornar uma string ou não
+  // Metodo para cadastrar uma autenticação
+  Future<String?> cadastrarUsuario({
+    // Future<String?> => Funcção assincrona que permite retornar uma string ou não
     required String email,
     required String senha,
     required String nome,
-    required String cpfCnpj,
-    required bool ativo,
-    required bool excluir,
-    required String cep,
-    required String dt_nasc,
-    required String endereco,
-    required String telefone,
-    required int tipo_user, // 1 para cliente, 2 para lojista
-    required int codLoja, // zero se não for lojista
   }) async {
     try {
-      UserCredential userCredential = await _firebaseAuthn
+      UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: senha);
       await userCredential.user!.updateDisplayName(nome);
       print("Cadastrar usuário");
     } on FirebaseAuthException catch (e) {
-      switch(e.code){
-        case "email-alredy-in-use":
+      switch (e.code) {
+        case "email-already-in-use":
           return "Email já está cadastrado!";
+        case "weak-password":
+          return "Senha muito fraca!";
       }
       return e.code;
     }

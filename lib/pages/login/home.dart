@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ipheira/pages/register.dart';
+import 'package:ipheira/pages/communidades/home_comunidades.dart';
+import 'package:ipheira/pages/login/component/show_snackbar.dart';
+import 'package:ipheira/pages/login/register.dart';
 import 'package:ipheira/utils/image_url.dart';
 
-import '../services/auth_service.dart';
+import '../../services/auth_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class _HomePageState extends State<HomePage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  //Objeto com as funcões de autenticação
   AuthService authService = AuthService();
 
   @override
@@ -50,6 +53,7 @@ class _HomePageState extends State<HomePage> {
                       fit: BoxFit.fill,
                     ),
                   ),
+                  // BEM-VINDO
                   RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(
@@ -68,6 +72,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+                  // EMAIL
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: TextFormField(
@@ -83,6 +88,7 @@ class _HomePageState extends State<HomePage> {
                         fillColor: Color.fromRGBO(200, 200, 200, 1),
                         filled: true,
                       ),
+                      // Validação do campo email
                       validator: (value) {
                         if (value == null || value == "") {
                           return "O valor de email deve ser preenchido";
@@ -95,6 +101,7 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   ),
+                  // PASSWORD
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: TextFormField(
@@ -119,14 +126,16 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   ),
+                  // BOTÃO LOGIN
                   Padding(
                     padding:
                         const EdgeInsets.symmetric(vertical: 18, horizontal: 8),
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          print(emailController.text);
-                          print(passwordController.text);
+                          _entrarUsuario(
+                              email: emailController.text,
+                              senha: passwordController.text);
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -138,7 +147,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (newContext) => const RegisterForm()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (newContext) => const RegisterForm()));
                     },
                     child: const Text(
                       'Ainda não tem conta? cadastre-se agora',
@@ -148,9 +160,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {
-
-                    },
+                    onTap: () {},
                     child: const Text(
                       'Esqueceu a senha?',
                       style: TextStyle(
@@ -167,32 +177,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  botaoEnviarClicado() {
-    String email = emailController.text;
-    String senha = passwordController.text;
-    //String nome = _nomeController.text;
-
-    // if (_formKey.currentState!.validate()) {
-    //   if (isEntrando) {
-    //     _entrarUsuario(email: email, senha: senha);
-    //   } else {
-    //     _criarUsuario(email: email, senha: senha, nome: nome);
-    //   }
-    // }
-  }
-
-  // _criarUsuario(
-  //     {required String email, required String senha, required String nome, }) async {
-  //   String? erro = await authService.cadastrarUsuario(email: email, senha: senha, nome: nome, cpfCnpj: cpfCnpj, ativo: ativo, excluir: excluir, cep: cep, dt_nasc: dt_nasc, endereco: endereco, telefone: telefone, tipo_user: tipo_user, codLoja: codLoja)
-  //   if(erro == null) {
-  //     print("Usuário Cadastrado");
-  //   } else {
-  //     print(erro);
-  //   }
-  //   print("Criar usuário $email, $senha, $nome");
-  // }
-
+  // METODO DE AUTENTICAÇÃO FIREBASE
   _entrarUsuario({required String email, required String senha}) {
-    authService.entrarUsuario(email: email, senha: senha);
+    authService.entrarUsuario(email: email, senha: senha).then((String? erro) {
+      if (erro == null) {
+        showSnackBar(context: context, mensagem: "Bem vindo!", isErro: false);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (newContext) => const HomeComunidades()));
+      } else {
+        showSnackBar(context: context, mensagem: erro);
+      }
+    });
+    // Navigator.push(context, MaterialPageRoute(builder: (newContext) => const HomeComunidades()));
   }
 }

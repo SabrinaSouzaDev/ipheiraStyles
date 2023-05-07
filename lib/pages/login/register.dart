@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ipheira/pages/login/component/show_snackbar.dart';
+import 'package:ipheira/services/auth_service.dart';
 import 'package:ipheira/utils/image_url.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -14,10 +16,15 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController userTypeController = TextEditingController();
   TextEditingController nameController = TextEditingController();
 
+  final _formKey = GlobalKey<FormState>();
+  AuthService authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return Form(
+      key: _formKey,
+      child: Scaffold(
+          body: Center(
         child: Container(
           height: 1000,
           decoration: BoxDecoration(
@@ -25,18 +32,21 @@ class _RegisterFormState extends State<RegisterForm> {
                   image: NetworkImage(ImageUrl.background.value),
                   fit: BoxFit.scaleDown,
                   alignment: Alignment.bottomCenter // alterado aqui
-              ),
+                  ),
               color: Colors.white),
           child: Column(
             children: [
-              const SizedBox(height: 75,),
+              const SizedBox(
+                height: 75,
+              ),
               SingleChildScrollView(
                 child: Column(
                   children: [
+                    //NOME
                     TextFormField(
                       textAlign: TextAlign.start,
                       controller: nameController,
-                      obscureText: true,
+                      obscureText: false,
                       onChanged: (text) {
                         setState(() {});
                       },
@@ -49,6 +59,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         filled: true,
                       ),
                     ),
+                    // TIPO DE USUÁRIO
                     TextFormField(
                       textAlign: TextAlign.start,
                       controller: userTypeController,
@@ -65,10 +76,11 @@ class _RegisterFormState extends State<RegisterForm> {
                         filled: true,
                       ),
                     ),
+                    // EMAIL
                     TextFormField(
                       textAlign: TextAlign.start,
                       controller: emailController,
-                      obscureText: true,
+                      obscureText: false,
                       onChanged: (text) {
                         setState(() {});
                       },
@@ -80,7 +92,18 @@ class _RegisterFormState extends State<RegisterForm> {
                         fillColor: Color.fromRGBO(200, 200, 200, 1),
                         filled: true,
                       ),
+                      validator: (value) {
+                        if (value == null || value == "") {
+                          return "O valor de email deve ser preenchido";
+                        }
+                        if (!value.contains("@") ||
+                            !value.contains(".") ||
+                            value.length < 4) {
+                          return "O email deve ser válido";
+                        }
+                      },
                     ),
+                    // PASSWORD
                     TextFormField(
                       textAlign: TextAlign.start,
                       controller: passwordController,
@@ -96,17 +119,31 @@ class _RegisterFormState extends State<RegisterForm> {
                         fillColor: Color.fromRGBO(200, 200, 200, 1),
                         filled: true,
                       ),
+                      validator: (value) {
+                        if (value == null || value.length < 4) {
+                          return "A senha deve ser válida";
+                        }
+                      },
                     ),
+                    // BOTÃO CADASTRAR
                     ElevatedButton(
-                        onPressed: (){
-                          print(passwordController.text);
-                          print(emailController.text);
-                          print(userTypeController.text);
-                          print(nameController.text);
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _criarUsuario(
+                                email: emailController.text,
+                                senha: passwordController.text,
+                                nome: nameController.text);
+                            // print(passwordController.text);
+                            // print(emailController.text);
+                            // print(userTypeController.text);
+                            // print(nameController.text);
+                          };
+
                         },
-                        child: const Text("Cadastrar")
+                        child: const Text("Cadastrar")),
+                    const SizedBox(
+                      height: 12,
                     ),
-                    const SizedBox(height: 12,),
                     GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
@@ -115,8 +152,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         'Faça Login',
                         style: TextStyle(
                             decoration: TextDecoration.underline,
-                            color: Color.fromRGBO(0, 102, 51, 1)
-                        ),
+                            color: Color.fromRGBO(0, 102, 51, 1)),
                       ),
                     ),
                   ],
@@ -125,7 +161,33 @@ class _RegisterFormState extends State<RegisterForm> {
             ],
           ),
         ),
-      )
+      )),
     );
+  }
+
+  // METODO DE CRIAÇÃO DE AUTENTICAÇÃO FIREBASE
+  _criarUsuario({
+    required String email,
+    required String senha,
+    required String nome,
+  }){
+    //String? erro = await authService.cadastrarUsuario(email: email, senha: senha, nome: nome, cpfCnpj: cpfCnpj, ativo: ativo, excluir: excluir, cep: cep, dt_nasc: dt_nasc, endereco: endereco, telefone: telefone, tipo_user: tipo_user, codLoja: codLoja)
+    authService
+        .cadastrarUsuario(
+      email: email,
+      senha: senha,
+      nome: nome,
+    )
+        .then((String? erro) {
+      if (erro == null) {
+        showSnackBar(
+            context: context,
+            mensagem: "Usuário Cadastrado com sucesso!",
+            isErro: false);
+        Navigator.pop(context);
+      } else {
+        showSnackBar(context: context, mensagem: erro);
+      }
+    });
   }
 }
