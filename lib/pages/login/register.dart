@@ -80,7 +80,7 @@ class _RegisterFormState extends State<RegisterForm> {
                             )
                           ),
                           ListTile(
-                              title: const Text("Lojista"),
+                              title: const Text("Cliente"),
                               leading: Radio<int>(
                                 value: 2,
                                 groupValue: userTypeController,
