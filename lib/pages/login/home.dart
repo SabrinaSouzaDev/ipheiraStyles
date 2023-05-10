@@ -155,16 +155,17 @@ class _HomePageState extends State<HomePage> {
                     child: const Text(
                       'Ainda não tem conta? cadastre-se agora',
                       style: TextStyle(
-                          decoration: TextDecoration.underline,
+                          decoration: TextDecoration.none,
                           color: Color.fromRGBO(0, 102, 51, 1)),
                     ),
                   ),
+                  SizedBox(height: 15,),
                   GestureDetector(
                     onTap: () {},
                     child: const Text(
                       'Esqueceu a senha?',
                       style: TextStyle(
-                          decoration: TextDecoration.underline,
+                          decoration: TextDecoration.none,
                           color: Colors.red),
                     ),
                   ),
