@@ -16,6 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController resetPasswordEmailController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -161,7 +162,59 @@ class _HomePageState extends State<HomePage> {
                   ),
                   SizedBox(height: 15,),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Redefinir Senha'),
+                              content: Container(
+                                width: double.maxFinite,
+                                child: TextFormField(
+                                  textAlign: TextAlign.start,
+                                  onChanged: (text) {
+                                    setState(() {});
+                                  },
+                                  controller: resetPasswordEmailController,
+                                  decoration: const InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                                    hintText: 'Digite seu email',
+                                    hintStyle: TextStyle(color: Colors.black),
+                                    fillColor: Color.fromRGBO(200, 200, 200, 1),
+                                    filled: true,
+                                  ),
+                                  // Validação do campo email
+                                  validator: (value) {
+                                    if (value == null || value == "") {
+                                      return "O valor de email deve ser preenchido";
+                                    }
+                                    if (!value.contains("@") ||
+                                        !value.contains(".") ||
+                                        value.length < 4) {
+                                      return "O email deve ser válido";
+                                    }
+                                  },
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Enviar'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Cancelar', style: TextStyle(color: Colors.red),),
+                                ),
+                              ],
+                            );
+                          },
+                      );
+                    },
                     child: const Text(
                       'Esqueceu a senha?',
                       style: TextStyle(
