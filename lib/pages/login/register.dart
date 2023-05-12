@@ -1,9 +1,12 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ipheira/models/usuario.dart';
 import 'package:ipheira/pages/login/component/show_snackbar.dart';
 import 'package:ipheira/services/auth_service.dart';
+import 'package:ipheira/services/usuario_service.dart';
 import 'package:ipheira/utils/image_url.dart';
-import 'package:brasil_fields/brasil_fields.dart';
+import 'package:uuid/uuid.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key? key}) : super(key: key);
@@ -16,7 +19,8 @@ class _RegisterFormState extends State<RegisterForm> {
   //controllers gerais
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
 
@@ -26,7 +30,8 @@ class _RegisterFormState extends State<RegisterForm> {
 
   //controllers específicos de cliente
   final TextEditingController birthdayController = TextEditingController();
-  final TextEditingController documentController = TextEditingController();
+
+  //final TextEditingController documentController = TextEditingController();
 
   int userTypeController = 0;
   bool showPassword = false;
@@ -34,6 +39,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   final _formKey = GlobalKey<FormState>();
   AuthService authService = AuthService();
+  UsuarioService usuarioService = UsuarioService();
 
   final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$');
 
@@ -76,7 +82,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           title: const Text("Cliente"),
                           minLeadingWidth: 0,
                           leading: Radio<int>(
-                            value: 0,
+                            value: 0, //0 => para Cliente
                             groupValue: userTypeController,
                             onChanged: (value) {
                               setState(() {
@@ -90,7 +96,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           title: const Text("Lojista"),
                           minLeadingWidth: 10,
                           leading: Radio<int>(
-                            value: 1,
+                            value: 1, // 1 => para Lojista
                             groupValue: userTypeController,
                             onChanged: (value) {
                               setState(() {
@@ -222,13 +228,15 @@ class _RegisterFormState extends State<RegisterForm> {
                           filled: true,
                         ),
                         validator: (value) {
-                          if (value != null && value.isEmpty) {
+                          if (value == null || value.isEmpty) {
+                            print("Tá vazio");
                             return "O campo precisa ser preenchido!";
                           }
                           return null;
                         },
                       ),
                     ),
+                    // Nome da loja
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 5, horizontal: 15),
@@ -249,8 +257,10 @@ class _RegisterFormState extends State<RegisterForm> {
                           filled: true,
                         ),
                         validator: (value) {
-                          if (value != null && value.isEmpty) {
-                            return "O campo precisa ser preenchido!";
+                          if (userTypeController == 1) {
+                            if (value == null || value.isEmpty) {
+                              return "O campo precisa ser preenchido!";
+                            }
                           }
                           return null;
                         },
@@ -258,9 +268,10 @@ class _RegisterFormState extends State<RegisterForm> {
                     ),
                   ],
                 ),
+                // Senha
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   child: TextFormField(
                     textAlign: TextAlign.start,
                     controller: passwordController,
@@ -302,9 +313,10 @@ class _RegisterFormState extends State<RegisterForm> {
                     },
                   ),
                 ),
+                // Confirmar Senha
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   child: TextFormField(
                     textAlign: TextAlign.start,
                     controller: confirmPasswordController,
@@ -346,6 +358,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     },
                   ),
                 ),
+                //birthday
                 IndexedStack(
                   index: userTypeController,
                   children: <Widget>[
@@ -385,39 +398,44 @@ class _RegisterFormState extends State<RegisterForm> {
                 const SizedBox(
                   height: 12,
                 ),
+                // Botão Cadastro
                 ElevatedButton(
                     onPressed: () {
-                      print(emailController.text);
+                      // print(emailController.text);
+                      // print(birthdayController.text);
                       if (_formKey.currentState!.validate()) {
-
+                        print("Validou");
                         _createUser(
                             email: emailController.text,
                             senha: passwordController.text,
                             nome: nameController.text);
+                        _registerUser(
+                            fullName: nameController.text,
+                            email: emailController.text,
+                            password: passwordController.text,
+                            phone: phoneController.text,
+                            storeName: storeNameController.text,
+                            address: addressController.text,
+                            typeUser: userTypeController,
+                            birthdayDate: birthdayController.text);
 
-                        if(userTypeController == 0){
-                          _registerUser(
-                              fullName: nameController.text,
-                              email: emailController.text,
-                              phone: phoneController.text,
-                              birthdayDate: birthdayController.text
-                          );
-                        }
-                        else{
-                          _createStore(
-                              fullName: nameController.text,
-                              email: emailController.text,
-                              phone: phoneController.text,
-                              storeName: storeNameController.text,
-                              address: addressController.text
-                          );
-                        }
-                        ScaffoldMessenger
-                          .of(context)
-                          .showSnackBar(
+                        // if (userTypeController == 0) {
+                        //   _registerUser(
+                        //       fullName: nameController.text,
+                        //       email: emailController.text,
+                        //       phone: phoneController.text,
+                        //       birthdayDate: birthdayController.text);
+                        // } else {
+                        //   _createStore(
+                        //       fullName: nameController.text,
+                        //       email: emailController.text,
+                        //       phone: phoneController.text,
+                        //       storeName: storeNameController.text,
+                        //       address: addressController.text);
+                        // }
+                        ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text("Salvando nova Tarefa")
-                        ));
+                                content: Text("Usuário cadastrado com Sucesso!")));
                         Navigator.pop(context);
                       }
                     },
@@ -449,24 +467,47 @@ class _RegisterFormState extends State<RegisterForm> {
     );
   }
 
-
-  _createStore({
-    required String fullName,
-    required String email,
-    required String phone,
-    required String storeName,
-    required String address
-  }){
+  _createStore(
+      {required String fullName,
+      required String email,
+      required String phone,
+      required String storeName,
+      required String address}) {
     //TODO
   }
 
-  _registerUser({
-    required String fullName,
-    required String email,
-    required String phone,
-    required String birthdayDate,
-  }){
-    //TODO
+  _registerUser(
+      {required String fullName,
+      required String email,
+      required String password,
+      required String phone,
+      required String storeName,
+      required String address,
+      required int typeUser,
+      required String birthdayDate}) {
+    Usuario usuario = Usuario(
+        id_usuario: const Uuid().v1(),
+        id_loja: 0,
+        tipo_usuario: typeUser,
+        nome_usuario: fullName,
+        data_nasc: birthdayDate,
+        email_usuario: email,
+        senha: password,
+        telefone_usuario: phone,
+        ativo: true,
+        excluir: false);
+    print("Entrei!");
+    usuarioService.cadastrarUsuario(usuario).then((String? erro) {
+      print(erro);
+      if (erro == null) {
+        showSnackBar(
+            context: context,
+            mensagem: "Usuário Cadastrado com sucesso!",
+            isErro: false);
+      } else {
+        showSnackBar(context: context, mensagem: erro);
+      }
+    });
   }
 
   _createUser({
