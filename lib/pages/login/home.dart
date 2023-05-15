@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ipheira/pages/communidades/home_comunidades.dart';
+import 'package:ipheira/pages/communidades/comunidades.dart';
 import 'package:ipheira/pages/login/component/show_snackbar.dart';
 import 'package:ipheira/pages/login/register.dart';
 import 'package:ipheira/utils/image_url.dart';
