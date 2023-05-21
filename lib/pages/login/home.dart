@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:ipheira/pages/communidades/comunidades.dart';
 import 'package:ipheira/pages/login/component/show_snackbar.dart';
 import 'package:ipheira/pages/login/register.dart';
@@ -33,6 +32,7 @@ class _HomePageState extends State<HomePage>
   AuthService authService = AuthService();
 
   bool _obscureText = true;
+  bool _passwordVisible = false;
 
   @override
   void initState() {
@@ -57,6 +57,7 @@ class _HomePageState extends State<HomePage>
   void _togglePasswordVisibility() {
     setState(() {
       _obscureText = !_obscureText;
+      _passwordVisible = !_passwordVisible;
     });
   }
 
@@ -69,13 +70,13 @@ class _HomePageState extends State<HomePage>
       child: Scaffold(
         body: Center(
           child: Container(
+            padding: const EdgeInsets.only(bottom: 1),
             height: 1000,
-            
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(ImageUrl.background.value),
                 fit: BoxFit.scaleDown,
-                alignment: Alignment.bottomCenter,
+                alignment: Alignment.center,
               ),
               color: Colors.white,
             ),
@@ -107,12 +108,17 @@ class _HomePageState extends State<HomePage>
                         RichText(
                           text: TextSpan(
                             text: 'Bem-vindo\n',
-                            style: TextStyle(color: Colors.black, fontSize: 19),
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 19,
+                            ),
                             children: [
                               TextSpan(
                                 text: 'ao\n',
                                 style: TextStyle(
-                                    color: Colors.black, fontSize: 19),
+                                  color: Colors.black,
+                                  fontSize: 19,
+                                ),
                               ),
                               TextSpan(
                                 text: 'Ipheira',
@@ -178,12 +184,16 @@ class _HomePageState extends State<HomePage>
                         prefixIcon: Icon(Icons.lock),
                         suffixIcon: GestureDetector(
                           onTap: _togglePasswordVisibility,
-                          child: Icon(
-                            _obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                            color: Color.fromRGBO(77, 167, 104,
-                                1), // Customize a cor conforme desejado
+                          child: IconButton(
+                            onPressed: _togglePasswordVisibility,
+                            icon: Icon(
+                              _passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: _passwordVisible
+                                  ? Colors.green
+                                  : Colors.black,
+                            ),
                           ),
                         ),
                       ),

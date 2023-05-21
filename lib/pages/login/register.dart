@@ -293,8 +293,9 @@ class _RegisterFormState extends State<RegisterForm> {
                           showPassword
                               ? Icons.visibility
                               : Icons.visibility_off,
-                          color: Colors.grey,
-                        ),
+                         color:
+                                showPassword ? Colors.green : Colors.black,
+                          ),
                         onPressed: () {
                           setState(() {
                             showPassword = !showPassword;
