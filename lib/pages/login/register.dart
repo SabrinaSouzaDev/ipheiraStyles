@@ -129,6 +129,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       hintStyle: TextStyle(color: Colors.black),
                       fillColor: Color.fromRGBO(200, 200, 200, 1),
                       filled: true,
+                      prefixIcon: Icon(Icons.person)
                     ),
                     validator: (value) {
                       if (value != null && value.isEmpty) {
@@ -144,6 +145,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   child: TextFormField(
                     textAlign: TextAlign.start,
+                    
                     controller: emailController,
                     obscureText: false,
                     onChanged: (text) {
@@ -158,6 +160,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       hintStyle: TextStyle(color: Colors.black),
                       fillColor: Color.fromRGBO(200, 200, 200, 1),
                       filled: true,
+                      prefixIcon: Icon(Icons.email),
                     ),
                     validator: (value) {
                       if (value != null && value.isEmpty) {
@@ -188,6 +191,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       hintStyle: TextStyle(color: Colors.black),
                       fillColor: Color.fromRGBO(200, 200, 200, 1),
                       filled: true,
+                      prefixIcon: Icon(Icons.phone)
                     ),
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
@@ -226,6 +230,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           hintStyle: TextStyle(color: Colors.black),
                           fillColor: Color.fromRGBO(200, 200, 200, 1),
                           filled: true,
+                          prefixIcon: Icon(Icons.calendar_month)
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -255,6 +260,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           hintStyle: TextStyle(color: Colors.black),
                           fillColor: Color.fromRGBO(200, 200, 200, 1),
                           filled: true,
+                          prefixIcon: Icon(Icons.store)
                         ),
                         validator: (value) {
                           if (userTypeController == 1) {
@@ -288,13 +294,14 @@ class _RegisterFormState extends State<RegisterForm> {
                       hintStyle: const TextStyle(color: Colors.black),
                       fillColor: const Color.fromRGBO(200, 200, 200, 1),
                       filled: true,
+                      prefixIcon: Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
                           showPassword
                               ? Icons.visibility
                               : Icons.visibility_off,
                          color:
-                                showPassword ? Colors.green : Colors.black,
+                                showPassword ? Colors.green : Color.fromRGBO(104, 104, 104, 1),
                           ),
                         onPressed: () {
                           setState(() {
@@ -334,6 +341,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       hintStyle: const TextStyle(color: Colors.black),
                       fillColor: const Color.fromRGBO(200, 200, 200, 1),
                       filled: true,
+                      prefixIcon: Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
                           showConfirmPassword
@@ -385,6 +393,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           hintStyle: TextStyle(color: Colors.black),
                           fillColor: Color.fromRGBO(200, 200, 200, 1),
                           filled: true,
+                          prefixIcon: Icon(Icons.map)
                         ),
                         validator: (value) {
                           if (value != null && value.isEmpty) {

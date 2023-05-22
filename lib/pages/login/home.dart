@@ -6,7 +6,6 @@ import 'package:ipheira/pages/login/component/show_snackbar.dart';
 import 'package:ipheira/pages/login/register.dart';
 import 'package:ipheira/utils/image_url.dart';
 import 'package:shimmer/shimmer.dart';
-
 import '../../services/auth_service.dart';
 
 class HomePage extends StatefulWidget {
@@ -192,7 +191,7 @@ class _HomePageState extends State<HomePage>
                                   : Icons.visibility_off,
                               color: _passwordVisible
                                   ? Colors.green
-                                  : Colors.black,
+                                  : Color.fromRGBO(104, 104, 104, 1),
                             ),
                           ),
                         ),
